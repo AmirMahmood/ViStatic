@@ -21,7 +21,10 @@ class CollectionItem {
     }
 
     get_title() {
-        return this.cfg.title.trim();
+        if (this.cfg.hasOwnProperty('title')) return this.cfg.title.trim();
+
+        let file_name = this.get_video().split('/').pop().replace(/\.[^.]+$/, '');
+        return file_name.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()).trim();
     }
 
     get_id() {
