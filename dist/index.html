@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>ViStatic</title>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <script src="/vistatic.js"></script>
+</head>
+
+<body>
+    <div id="app" class="section">
+        <div class="has-text-centered mb-5">
+            <input v-model="search" type="text" placeholder="Search" class="input" style="max-width:30rem" />
+        </div>
+
+        <div class="is-flex is-flex-wrap-wrap is-justify-content-center" style="gap:1rem">
+            <template v-for="video in filtered_videos">
+                <div class="card" style="width:24rem">
+                    <div class="card-image">
+                        <figure class="image">
+                            <img :src="video.get_poster()" />
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <a target="_blank" :href="`/player.html?collection_id=${video.get_id()}`">
+                            {{ video.get_title()}}
+                        </a>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+    </div>
+
+
+    <script>
+        const { createApp, ref, computed } = Vue
+
+        let app = {
+            setup() {
+                const videos = ref([]);
+                const search = ref('');
+
+                const filtered_videos = computed(() => {
+                    if (!search.value) {
+                        return videos.value;
+                    }
+                    return videos.value.filter(item =>
+                        item.get_title().toLowerCase().includes(search.value.toLowerCase())
+                    )
+                });
+
+                collection_factory('/collection.json').then(res => { videos.value = res });
+
+
+                return {
+                    filtered_videos, search
+                }
+            }
+        }
+
+        const v_app = createApp(app);
+        v_app.mount('#app');
+    </script>
+</body>
+
+</html>
