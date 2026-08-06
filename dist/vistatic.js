@@ -18,10 +18,19 @@ class CollectionItem {
         this.cfg = collection_item_cfg;
         this.resolved_poster = null;
         this.resolved_description = null;
+        this.resolved_title_from_md = null;
     }
 
     get_title() {
         if (this.cfg.hasOwnProperty('title')) return this.cfg.title.trim();
+
+        if (this.resolved_title_from_md === null) {
+            this.get_description(); // call to resolve title from description
+        }
+
+        if (this.resolved_title_from_md !== ""){
+            return this.resolved_title_from_md;
+        }
 
         let file_name = this.get_video().split('/').pop().replace(/\.[^.]+$/, '');
         return file_name.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()).trim();
@@ -50,6 +59,12 @@ class CollectionItem {
         CollectionItem.loadMarkdown(md_path)
             .then(x => {
                 this.resolved_description = x;
+
+                const tokens = marked.lexer(x);
+                const h1 = tokens.find(
+                    (token) => token.type === "heading" && token.depth === 1
+                );
+                this.resolved_title_from_md = h1?.text.trim() ?? "";
             })
             .catch(function (error) {
                 this.resolved_description = "";
