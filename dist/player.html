@@ -40,7 +40,66 @@
                 </div>
 
                 <div class="box" style="width:100%;">
-                    <button class="button is-warning" id="copyCurrentBtn">Copy current video time</button>
+                    <div class="dropdown is-hoverable">
+                        <div class="dropdown-trigger">
+                            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                                <span class="icon is-small">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-share" viewBox="0 0 16 16">
+                                        <path
+                                            d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3" />
+                                    </svg>
+                                </span>
+                                <span>Share</span>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                            <div class="dropdown-content">
+                                <button class="button dropdown-item" id="copylink">
+                                    <span class="icon is-small">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z" />
+                                        </svg>
+                                    </span>
+                                    <span>Copy link</span>
+                                </button>
+                                <button class="button dropdown-item" id="copylinktime">
+                                    <span class="icon is-small">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                                            <path
+                                                d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
+                                            <path
+                                                d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
+                                        </svg>
+                                    </span>
+                                    <span>Copy link with time</span>
+                                </button>
+                                <button class="button dropdown-item" id="copyiframe">
+                                    <span class="icon is-small">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-code-slash" viewBox="0 0 16 16">
+                                            <path
+                                                d="M10.478 1.647a.5.5 0 1 0-.956-.294l-4 13a.5.5 0 0 0 .956.294zM4.854 4.146a.5.5 0 0 1 0 .708L1.707 8l3.147 3.146a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 0 1 .708 0m6.292 0a.5.5 0 0 0 0 .708L14.293 8l-3.147 3.146a.5.5 0 0 0 .708.708l3.5-3.5a.5.5 0 0 0 0-.708l-3.5-3.5a.5.5 0 0 0-.708 0" />
+                                        </svg>
+                                    </span>
+                                    <span>Copy embedded code</span>
+                                </button>
+                                <button class="button dropdown-item" id="copyiframetime">
+                                    <span class="icon is-small">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-code-slash" viewBox="0 0 16 16">
+                                            <path
+                                                d="M10.478 1.647a.5.5 0 1 0-.956-.294l-4 13a.5.5 0 0 0 .956.294zM4.854 4.146a.5.5 0 0 1 0 .708L1.707 8l3.147 3.146a.5.5 0 0 1-.708.708l-3.5-3.5a.5.5 0 0 1 0-.708l3.5-3.5a.5.5 0 0 1 .708 0m6.292 0a.5.5 0 0 0 0 .708L14.293 8l-3.147 3.146a.5.5 0 0 0 .708.708l3.5-3.5a.5.5 0 0 0 0-.708l-3.5-3.5a.5.5 0 0 0-.708 0" />
+                                        </svg>
+                                    </span>
+                                    <span>Copy embedded code with time</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="card" style="width:100%;" v-if="item">
@@ -71,7 +130,14 @@
                     });
                 });
 
-                const clipboard = new ClipboardJS('#copyCurrentBtn', {
+                const clipboard_link = new ClipboardJS('#copylink', {
+                    text: function () {
+                        const url = new URL(window.location.href);
+                        url.searchParams.delete("time");
+                        return url.href;
+                    }
+                });
+                const clipboard_link_time = new ClipboardJS('#copylinktime', {
                     text: function () {
                         const time = parseInt(player.currentTime());
                         const url = new URL(window.location.href);
@@ -79,13 +145,24 @@
                         return url.href;
                     }
                 });
-
-                clipboard.on('success', function (event) {
-                    event.clearSelection();
+                const clipboard_iframe = new ClipboardJS('#copyiframe', {
+                    text: function () {
+                        return "";
+                    }
+                });
+                const clipboard_iframe_time = new ClipboardJS('#copyiframetime', {
+                    text: function () {
+                        return "";
+                    }
                 });
 
-                clipboard.on('error', function (event) {
-                    console.error('Copy failed', event);
+                [clipboard_link, clipboard_link_time, clipboard_iframe, clipboard_iframe_time].forEach((c) => {
+                    c.on('success', function (event) {
+                        event.clearSelection();
+                    });
+                    c.on('error', function (event) {
+                        console.error('Copy failed', event);
+                    });
                 });
 
                 function md_to_html(content) {
