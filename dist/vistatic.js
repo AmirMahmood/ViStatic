@@ -2,12 +2,22 @@ function collection_factory(json_path) {
     return fetch(json_path)
         .then(response => response.json())
         .then(collection => {
-            var collection_items = []
+            const items_ids = new Set();
+            var collection_items = [];
             collection.forEach((item, index) => {
-                if (item.hasOwnProperty('video'))
+                if (item.hasOwnProperty('video')) {
                     collection_items.push(
                         new CollectionItem(item)
                     );
+
+                    let id = collection_items[collection_items.length - 1].get_id();
+                    if (items_ids.has(id))
+                        alert("Duplicated id detected");
+                    else
+                        items_ids.add(id);
+                }
+                else
+                    alert("Item without 'video' property detected");
             });
             return collection_items;
         })
@@ -19,6 +29,7 @@ class CollectionItem {
         this.resolved_poster = null;
         this.resolved_description = null;
         this.resolved_title_from_md = null;
+        this.resolved_id = null;
     }
 
     get_title() {
@@ -28,7 +39,7 @@ class CollectionItem {
             this.get_description(); // call to resolve title from description
         }
 
-        if (this.resolved_title_from_md !== ""){
+        if (this.resolved_title_from_md !== "") {
             return this.resolved_title_from_md;
         }
 
@@ -39,7 +50,10 @@ class CollectionItem {
     get_id() {
         if (this.cfg.hasOwnProperty('id')) return this.cfg.id;
 
-        return CollectionItem.cyrb53(this.get_video());
+        if (this.resolved_id !== null) return this.resolved_id;
+
+        this.resolved_id = CollectionItem.cyrb53(this.get_video());
+        return this.resolved_id;
     }
 
     get_video() {
