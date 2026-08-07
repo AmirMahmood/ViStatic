@@ -7,17 +7,17 @@
 
     <title>ViStatic</title>
 
-    <script src="/vendor/vue.global.js"></script>
-    <link rel="stylesheet" href="/vendor/bulma.min.css">
+    <script src="vendor/vue.global.js"></script>
+    <link rel="stylesheet" href="vendor/bulma.min.css">
 
-    <link href="/vendor/videojs/video-js.css" rel="stylesheet" />
-    <script src="/vendor/videojs/video.min.js"></script>
-    <link href="/vendor/videojs/index.css" rel="stylesheet" />
+    <link href="vendor/videojs/video-js.css" rel="stylesheet" />
+    <script src="vendor/videojs/video.min.js"></script>
+    <link href="vendor/videojs/index.css" rel="stylesheet" />
 
-    <script src="/vendor/marked.umd.js"></script>
-    <script src="/vendor/clipboard.min.js"></script>
+    <script src="vendor/marked.umd.js"></script>
+    <script src="vendor/clipboard.min.js"></script>
 
-    <script src="/vistatic.js"></script>
+    <script src="vistatic.js"></script>
 
     <style>
         .video-js {
@@ -213,7 +213,7 @@
                 if (urlParams.has('collection_id')) {
                     collection_id = urlParams.get('collection_id');
 
-                    collection_factory('/collection.json').then(res => {
+                    collection_factory('collection.json').then(res => {
                         item.value = res.find((e) => e.get_id() === collection_id)
                         player.src(item.value.get_video());
                         player.load();

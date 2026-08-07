@@ -7,12 +7,12 @@
 
     <title>ViStatic</title>
 
-    <script src="/vendor/vue.global.js"></script>
-    <link rel="stylesheet" href="/vendor/bulma.min.css">
+    <script src="vendor/vue.global.js"></script>
+    <link rel="stylesheet" href="vendor/bulma.min.css">
 
-    <script src="/vendor/marked.umd.js"></script>
+    <script src="vendor/marked.umd.js"></script>
 
-    <script src="/vistatic.js"></script>
+    <script src="vistatic.js"></script>
 </head>
 
 <body>
@@ -58,7 +58,7 @@
                     )
                 });
 
-                collection_factory('/collection.json').then(res => { videos.value = res });
+                collection_factory('collection.json').then(res => { videos.value = res });
 
 
                 return {
