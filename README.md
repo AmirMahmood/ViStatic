@@ -2,6 +2,9 @@
 
 Demo of [ViStatic](https://github.com/AmirMahmood/ViStatic).
 
+* [ViStatic collection demo](https://amirmahmood.github.io/ViStatic/)
+* [embedded iframe sample](https://amirmahmood.github.io/ViStatic/iframe_test.html)
+
 ## Sample videos
 
 [Sample files library](https://samplelib.com/)
