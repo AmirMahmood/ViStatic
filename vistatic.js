@@ -107,7 +107,7 @@ class CollectionItem {
     }
 
     static loadMarkdown(path) {
-        return fetch(path.trim(), {mode: 'no-cors'})
+        return fetch(path.trim(), { mode: 'no-cors' })
             .then(function (response) {
                 if (!response.ok) {
                     throw new Error("Failed to load Markdown file: " + response.status);
@@ -123,7 +123,11 @@ class CollectionItem {
         const video = document.createElement('video');
         video.crossOrigin = 'anonymous';
         video.src = videoUrl;
-        video.currentTime = 0.001;
+        video.preload = 'metadata'; // hint: only fetch metadata, not full video
+
+        video.addEventListener('loadedmetadata', function () {
+            video.currentTime = 0.001;
+        }, { once: true });
 
         video.addEventListener('seeked', function () {
             const canvas = document.createElement('canvas');
