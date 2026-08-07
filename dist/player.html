@@ -185,7 +185,7 @@
                         const videoHeight = player.videoHeight();
                         const ratio = videoWidth / videoHeight;
                         const time = parseInt(player.currentTime());
-                        return getEmbedIframe(ratio, `${time}s`, collection_id);
+                        return getEmbedIframe(ratio, `0s`, collection_id);
                     }
                 });
                 const clipboard_iframe_time = new ClipboardJS('#copyiframetime', {
@@ -193,7 +193,8 @@
                         const videoWidth = player.videoWidth();
                         const videoHeight = player.videoHeight();
                         const ratio = videoWidth / videoHeight;
-                        return getEmbedIframe(ratio, '0s', collection_id);
+                        const time = parseInt(player.currentTime());
+                        return getEmbedIframe(ratio, `${time}s`, collection_id);
                     }
                 });
 
