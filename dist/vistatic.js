@@ -84,6 +84,8 @@ class CollectionItem {
                 this.resolved_description = "";
                 console.log(error)
             });
+
+        return this.resolved_description ?? "";
     }
 
     get_poster() {
@@ -100,6 +102,8 @@ class CollectionItem {
                 console.log("Error on creating poster from video");
             }
         );
+
+        return this.resolved_poster ?? "";
     }
 
     static loadMarkdown(path) {
