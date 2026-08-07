@@ -116,6 +116,35 @@
     </div>
 
     <script>
+        function getEmbedIframe(ratio, time, item_id) {
+            return `
+<!-- change following line width to change size -->
+<div style="position: relative; width: 100%; aspect-ratio: ${ratio};">
+    <iframe src="/embed.html?collection_id=${item_id}&time=${time}"
+        style="position: absolute; top:0; left:0; width:100%; height:100%; border:0;" allowFullScreen="true"
+        scrolling="no" webkitallowfullscreen="true" mozallowfullscreen="true" frameborder="0">
+    </iframe>
+</div>`;
+        }
+
+        function parseDuration(str) {
+            const regex = /^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/;
+            const match = str.match(regex);
+
+            // Must match AND contain at least one unit
+            if (!match || (!match[1] && !match[2] && !match[3])) {
+                return 0;
+            }
+
+            const hours = parseInt(match[1] || 0, 10);
+            const minutes = parseInt(match[2] || 0, 10);
+            const seconds = parseInt(match[3] || 0, 10);
+
+            return hours * 3600 + minutes * 60 + seconds;
+        }
+    </script>
+
+    <script>
         const { createApp, ref, watch, onMounted, useTemplateRef } = Vue
 
         let app = {
@@ -123,6 +152,7 @@
                 const item = ref(null);
                 const videoPlayer = useTemplateRef("videoPlayer");
                 let player = null;
+                let collection_id = null;
 
                 onMounted(() => {
                     player = videojs(videoPlayer.value, {
@@ -147,12 +177,19 @@
                 });
                 const clipboard_iframe = new ClipboardJS('#copyiframe', {
                     text: function () {
-                        return "";
+                        const videoWidth = player.videoWidth();
+                        const videoHeight = player.videoHeight();
+                        const ratio = videoWidth / videoHeight;
+                        const time = parseInt(player.currentTime());
+                        return getEmbedIframe(ratio, `${time}s`, collection_id);
                     }
                 });
                 const clipboard_iframe_time = new ClipboardJS('#copyiframetime', {
                     text: function () {
-                        return "";
+                        const videoWidth = player.videoWidth();
+                        const videoHeight = player.videoHeight();
+                        const ratio = videoWidth / videoHeight;
+                        return getEmbedIframe(ratio, '0s', collection_id);
                     }
                 });
 
@@ -169,26 +206,10 @@
                     return marked.parse(content)
                 }
 
-                function parseDuration(str) {
-                    const regex = /^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/;
-                    const match = str.match(regex);
-
-                    // Must match AND contain at least one unit
-                    if (!match || (!match[1] && !match[2] && !match[3])) {
-                        return 0;
-                    }
-
-                    const hours = parseInt(match[1] || 0, 10);
-                    const minutes = parseInt(match[2] || 0, 10);
-                    const seconds = parseInt(match[3] || 0, 10);
-
-                    return hours * 3600 + minutes * 60 + seconds;
-                }
-
                 let urlParams = new URLSearchParams(window.location.search);
 
                 if (urlParams.has('collection_id')) {
-                    const collection_id = urlParams.get('collection_id');
+                    collection_id = urlParams.get('collection_id');
 
                     collection_factory('/collection.json').then(res => {
                         item.value = res.find((e) => e.get_id() === collection_id)
