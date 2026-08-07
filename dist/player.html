@@ -21,6 +21,8 @@
 
     <style>
         .video-js {
+            border-radius:0.75rem;
+            max-width: 60% !important;
             max-height: 80vh !important;
         }
 
@@ -36,7 +38,7 @@
             <div class="is-flex is-flex-direction-column is-align-items-center" style="gap:1rem;">
 
                 <div class="has-text-centered">
-                    <video ref="videoPlayer" class="video-js" style="border-radius:0.75rem;" controls></video>
+                    <video ref="videoPlayer" class="video-js" controls></video>
                 </div>
 
                 <div class="box" style="width:100%;" v-if="item">
