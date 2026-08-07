@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>ViStatic</title>
+
+    <script src="/vendor/vue.global.js"></script>
+    <link rel="stylesheet" href="/vendor/bulma.min.css">
+
+    <link href="/vendor/videojs/video-js.css" rel="stylesheet" />
+    <script src="/vendor/videojs/video.min.js"></script>
+    <link href="/vendor/videojs/index.css" rel="stylesheet" />
+
+    <script src="/vendor/marked.umd.js"></script>
+    <script src="/vendor/clipboard.min.js"></script>
+
+    <script src="/vistatic.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            <video ref="videoPlayer" class="video-js" controls data-setup='{"fluid": true}'></video>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, watch, onMounted, useTemplateRef } = Vue
+
+        let app = {
+            setup() {
+                const item = ref(null);
+                const videoPlayer = useTemplateRef("videoPlayer");
+                let player = null;
+
+                onMounted(() => {
+                    player = videojs(videoPlayer.value, {
+                        controls: true
+                    });
+                });
+
+                const clipboard = new ClipboardJS('#copyCurrentBtn', {
+                    text: function () {
+                        const time = parseInt(player.currentTime());
+                        const url = new URL(window.location.href);
+                        url.searchParams.set("time", `${time}s`);
+                        return url.href;
+                    }
+                });
+
+                clipboard.on('success', function (event) {
+                    event.clearSelection();
+                });
+
+                clipboard.on('error', function (event) {
+                    console.error('Copy failed', event);
+                });
+
+                function md_to_html(content) {
+                    return marked.parse(content)
+                }
+
+                function parseDuration(str) {
+                    const regex = /^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/;
+                    const match = str.match(regex);
+
+                    // Must match AND contain at least one unit
+                    if (!match || (!match[1] && !match[2] && !match[3])) {
+                        return 0;
+                    }
+
+                    const hours = parseInt(match[1] || 0, 10);
+                    const minutes = parseInt(match[2] || 0, 10);
+                    const seconds = parseInt(match[3] || 0, 10);
+
+                    return hours * 3600 + minutes * 60 + seconds;
+                }
+
+                let urlParams = new URLSearchParams(window.location.search);
+
+                if (urlParams.has('collection_id')) {
+                    const collection_id = urlParams.get('collection_id');
+
+                    collection_factory('/collection.json').then(res => {
+                        item.value = res.find((e) => e.get_id() === collection_id)
+                        player.src(item.value.get_video());
+                        player.load();
+                        if (urlParams.has('time')) {
+                            player.currentTime(parseDuration(urlParams.get('time')));
+                        }
+                    });
+                }
+
+                return { item, md_to_html }
+            }
+        }
+
+        const v_app = createApp(app);
+        v_app.mount('#app');
+    </script>
+</body>
+
+</html>

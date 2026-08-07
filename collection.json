@@ -1,0 +1,13 @@
+[
+    {
+        "video": "https://samplelib.com/mp4/sample-5s-720p.mp4",
+        "title": "Test video of a road in a city",
+        "description": "from `samplelib.com` Test video of a road in a city"
+    },
+    {
+        "id": "my_unique_id",
+        "video": "https://samplelib.com/mp4/sample-10s.mp4",
+        "title": "Test video of a couple of buses passing by the park",
+        "description_md": "mycollection/sample-10s-description.md"
+    }
+]
