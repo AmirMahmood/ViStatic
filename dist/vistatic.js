@@ -80,9 +80,9 @@ class CollectionItem {
                 );
                 this.resolved_title_from_md = h1?.text.trim() ?? "";
             })
-            .catch(function (error) {
+            .catch(error => {
                 this.resolved_description = "";
-                console.log(error)
+                this.resolved_title_from_md = "";
             });
 
         return this.resolved_description ?? "";
@@ -107,13 +107,15 @@ class CollectionItem {
     }
 
     static loadMarkdown(path) {
-        return fetch(path.trim())
+        return fetch(path.trim(), {mode: 'no-cors'})
             .then(function (response) {
                 if (!response.ok) {
                     throw new Error("Failed to load Markdown file: " + response.status);
                 }
 
                 return response.text();
+            }).catch(function (error) {
+                throw new Error("Failed to load Markdown file: " + response.status);
             });
     }
 
