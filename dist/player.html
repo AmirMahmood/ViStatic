@@ -21,7 +21,7 @@
 
     <style>
         .video-js {
-            border-radius:0.75rem;
+            border-radius: 0.75rem;
             max-width: 60% !important;
             max-height: 80vh !important;
         }
@@ -109,7 +109,7 @@
 
                 <div class="card" style="width:100%;" v-if="item">
                     <div class="card-content">
-                        <div class="content">
+                        <div class="content" ref="md_container" @click="handleInternalTimeLink">
                             <div v-html="md_to_html(item.get_description())"></div>
                         </div>
                     </div>
@@ -137,7 +137,7 @@
 
             // Must match AND contain at least one unit
             if (!match || (!match[1] && !match[2] && !match[3])) {
-                return 0;
+                return null;
             }
 
             const hours = parseInt(match[1] || 0, 10);
@@ -153,6 +153,7 @@
 
         let app = {
             setup() {
+                const md_container = useTemplateRef("md_container");
                 const item = ref(null);
                 const videoPlayer = useTemplateRef("videoPlayer");
                 let player = null;
@@ -221,12 +222,32 @@
                         player.src(item.value.get_video());
                         player.load();
                         if (urlParams.has('time')) {
-                            player.currentTime(parseDuration(urlParams.get('time')));
+                            let time = parseDuration(urlParams.get('time'));
+                            if (time !== null) player.currentTime(time);
                         }
                     });
                 }
 
-                return { item, md_to_html }
+                document.querySelectorAll('a[href^="#"]').forEach(link => {
+                    link.addEventListener('click', function (e) {
+
+                    });
+                });
+
+                function handleInternalTimeLink(e) {
+                    const link = e.target.closest('a[href^="#"]');
+                    console.log(md_container);
+                    if (!link || !md_container.value.contains(link)) return;
+
+                    const time_href = link.getAttribute('href').trim().slice(1);
+                    let time = parseDuration(time_href);
+                    if (time !== null) {
+                        player.currentTime(time);
+                        e.preventDefault();
+                    }
+                }
+
+                return { item, md_to_html, handleInternalTimeLink }
             }
         }
 
