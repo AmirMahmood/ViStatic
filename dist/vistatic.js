@@ -122,19 +122,15 @@ class CollectionItem {
     static getVideoPoster(videoUrl, onSuccess, onError) {
         const video = document.createElement('video');
         video.crossOrigin = 'anonymous';
-        video.src = videoUrl;
-        video.preload = 'metadata'; // hint: only fetch metadata, not full video
-
-        video.addEventListener('loadedmetadata', function () {
-            video.currentTime = 0.001;
-        }, { once: true });
+        video.src = videoUrl + '#t=0.001';
+        video.preload = 'metadata';
 
         video.addEventListener('seeked', function () {
             const canvas = document.createElement('canvas');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             canvas.getContext('2d').drawImage(video, 0, 0);
-            onSuccess(canvas.toDataURL('image/jpeg'));
+            canvas.toBlob(blob => onSuccess(URL.createObjectURL(blob)), 'image/jpeg', 0.8);
         }, { once: true });
 
         video.addEventListener('error', function (e) {
